@@ -24,6 +24,7 @@ func InitServer(cfg *config.Config) {
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middleware.LimitByRequest())
 
 	RegisterRoutes(r)
+	RegisterSwagger(r, cfg)
 
 	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
 }
@@ -55,4 +56,15 @@ func RegisterValidators(cfg *config.Config) {
 			return validation.PasswordValidator(cfg, fl)
 		}, true)
 	}
+}
+
+func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
+	docs.SwaggerInfo.Title = "Mashinchi"
+	docs.SwaggerInfo.Description = "A modern marketplace for buying and selling cars."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Server.Port)
+	docs.SwaggerInfo.Schemes = []string{"http"}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
