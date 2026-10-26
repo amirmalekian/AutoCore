@@ -7,9 +7,12 @@ import (
 	"github.com/amirmalekian/Mashinchi/src/api/router"
 	"github.com/amirmalekian/Mashinchi/src/api/validation"
 	"github.com/amirmalekian/Mashinchi/src/config"
+	"github.com/amirmalekian/Mashinchi/src/docs"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitServer(cfg *config.Config) {
@@ -18,7 +21,7 @@ func InitServer(cfg *config.Config) {
 	RegisterValidators(cfg)
 
 	r.Use(middleware.Cors(cfg))
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middleware.LimitByRequest())
 
 	RegisterRoutes(r)
 
