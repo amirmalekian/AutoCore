@@ -5,22 +5,17 @@ import (
 
 	"github.com/amirmalekian/Mashinchi/src/api/middleware"
 	"github.com/amirmalekian/Mashinchi/src/api/router"
-	"github.com/amirmalekian/Mashinchi/src/api/validation"
 	"github.com/amirmalekian/Mashinchi/src/config"
-	"github.com/amirmalekian/Mashinchi/src/docs"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/validator/v10"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitServer(cfg *config.Config) {
 	r := gin.New()
 
-	RegisterRoutes(r)
-	
+	r.Use(middleware.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery())
+
+	RegisterRoutes(r)
 
 	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
 }
