@@ -5,12 +5,17 @@ import (
 
 	"github.com/amirmalekian/Mashinchi/src/api/middleware"
 	"github.com/amirmalekian/Mashinchi/src/api/router"
+	"github.com/amirmalekian/Mashinchi/src/api/validation"
 	"github.com/amirmalekian/Mashinchi/src/config"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 func InitServer(cfg *config.Config) {
 	r := gin.New()
+
+	RegisterValidators(cfg)
 
 	r.Use(middleware.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery())
@@ -36,5 +41,15 @@ func RegisterRoutes(r *gin.Engine) {
 	{
 		health := v2.Group("/health")
 		router.Health(health)
+	}
+}
+
+func RegisterValidators(cfg *config.Config) {
+	val, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
+		val.RegisterValidation("phone", validation.IranianPhoneNumberValidator, false)
+		val.RegisterValidation("password", func(fl validator.FieldLevel) bool {
+			return validation.PasswordValidator(cfg, fl)
+		}, true)
 	}
 }
