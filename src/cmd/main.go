@@ -5,6 +5,7 @@ import (
 	"github.com/amirmalekian/Mashinchi/src/config"
 	"github.com/amirmalekian/Mashinchi/src/data/cache"
 	"github.com/amirmalekian/Mashinchi/src/data/db"
+	"github.com/amirmalekian/Mashinchi/src/data/db/migrations"
 	"github.com/amirmalekian/Mashinchi/src/pkg/logging"
 )
 
@@ -26,6 +27,7 @@ func main() {
 	if err != nil {
 		logger.Fatal(logging.Postgres, logging.Startup, err.Error(), nil)
 	}
+	migrations.Up_1()
 
 	api.InitServer(cfg)
 }
