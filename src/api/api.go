@@ -8,6 +8,7 @@ import (
 	"github.com/amirmalekian/Mashinchi/src/api/validation"
 	"github.com/amirmalekian/Mashinchi/src/config"
 	"github.com/amirmalekian/Mashinchi/src/docs"
+	"github.com/amirmalekian/Mashinchi/src/pkg/logging"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
@@ -26,6 +27,8 @@ func InitServer(cfg *config.Config) {
 	RegisterRoutes(r)
 	RegisterSwagger(r, cfg)
 
+	logger := logging.NewLogger(cfg)
+	logger.Info(logging.General, logging.Startup, "Started", nil)
 	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
 }
 
