@@ -1,7 +1,12 @@
 package service_errors
 
 const (
-	OtpExists = "Otp Exists"
-	OtpUsed   = "Otp Used"
+	// Token
+	UnExpectedError = "Expected Error"
+	ClaimsNotFound   = "Claims Not Found"
+
+	// OTP
+	OtpExists  = "Otp Exists"
+	OtpUsed    = "Otp Used"
 	OtpInValid = "Otp Invalid"
 )
