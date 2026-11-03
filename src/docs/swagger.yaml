@@ -18,6 +18,15 @@ definitions:
     - last_name
     - phone_number
     type: object
+  github_com_amirmalekian_Mashinchi_src_api_dto.GetOtpRequest:
+    properties:
+      phoneNumber:
+        maxLength: 11
+        minLength: 11
+        type: string
+    required:
+    - phoneNumber
+    type: object
   github_com_amirmalekian_Mashinchi_src_api_helper.BaseHttpResponse:
     properties:
       error: {}
@@ -139,6 +148,36 @@ paths:
       summary: UserByID
       tags:
       - Test
+  /v1/users/send-otp:
+    post:
+      consumes:
+      - application/json
+      description: Send Otp to user
+      parameters:
+      - description: GetOtpRequest
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_amirmalekian_Mashinchi_src_api_dto.GetOtpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/github_com_amirmalekian_Mashinchi_src_api_helper.BaseHttpResponse'
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_amirmalekian_Mashinchi_src_api_helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_amirmalekian_Mashinchi_src_api_helper.BaseHttpResponse'
+      summary: Send Otp to user
+      tags:
+      - Users
 securityDefinitions:
   AuthBearer:
     in: header

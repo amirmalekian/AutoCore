@@ -24,22 +24,24 @@ func InitServer(cfg *config.Config) {
 	r.Use(middleware.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middleware.LimitByRequest())
 
-	RegisterRoutes(r)
+	RegisterRoutes(r, cfg)
 	RegisterSwagger(r, cfg)
 
 	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
 }
 
-func RegisterRoutes(r *gin.Engine) {
+func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	api := r.Group("/api")
 
 	v1 := api.Group("/v1")
 	{
 		health := v1.Group("/health")
 		test_router := v1.Group("/test")
+		users := v1.Group("/users")
 
 		router.Health(health)
 		router.TestRouter(test_router)
+		router.User(users, cfg)
 	}
 
 	v2 := api.Group("/v2")
