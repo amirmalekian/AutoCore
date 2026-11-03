@@ -29,3 +29,14 @@ redis:
   poolSize: 10
   poolTimeout: 15
   connMaxIdleTime: 500
+password:
+  includeChars: true
+  includeDigits: true
+  minLength: 6
+  maxLength: 64
+  includeUppercase: true
+  includeLowercase: true
+otp:
+  expireTime: 120
+  digits: 6
+  limiter: 100
