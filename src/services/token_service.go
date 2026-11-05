@@ -11,12 +11,12 @@ import (
 )
 
 type TokenService struct {
-	logger *logging.Logger
+	logger logging.Logger
 	cfg    *config.Config
 }
 
 type tokenDto struct {
-	UserId      string
+	UserId      int
 	FirstName   string
 	LastName    string
 	UserName    string
@@ -28,7 +28,7 @@ type tokenDto struct {
 func NewTokenService(cfg *config.Config) *TokenService {
 	logger := logging.NewLogger(cfg)
 	return &TokenService{
-		logger: &logger,
+		logger: logger,
 		cfg:    cfg,
 	}
 }
@@ -62,7 +62,7 @@ func (s *TokenService) GenerateToken(token *tokenDto) (*dto.TokenDetail, error) 
 	rtc["user_id"] = token.UserId
 	rtc["exp"] = td.RefreshTokenExpireTime
 
-	rt := jwt.NewWithClaims(jwt.SigningMethodES256, rtc)
+	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtc)
 
 	td.RefreshToken, err = rt.SignedString([]byte(s.cfg.JWT.RefreshSecret))
 

@@ -58,13 +58,16 @@ func (s *OtpService) ValidateOtp(ctx *gin.Context, phoneNumber, otp string) erro
 	res, err := cache.Get[OtpDto](ctx, s.redisClient, key)
 	if err != nil {
 		return err
-	} else if err == nil && res.Used {
+	} else if res.Used {
 		return &service_errors.ServiceError{EndUserMessage: service_errors.OtpUsed}
-	} else if err == nil && !res.Used && res.Value != otp {
+	} else if !res.Used && res.Value != otp {
 		return &service_errors.ServiceError{EndUserMessage: service_errors.OtpInValid}
-	} else if err == nil && !res.Used && res.Value == otp {
+	} else if !res.Used && res.Value == otp {
 		res.Used = true
 		err = cache.Set(ctx, s.redisClient, key, res, s.cfg.Otp.ExpireTime*time.Second)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
