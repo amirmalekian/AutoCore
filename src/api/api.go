@@ -18,7 +18,7 @@ import (
 func InitServer(cfg *config.Config) {
 	r := gin.New()
 
-	RegisterValidators(cfg)
+	RegisterValidators()
 
 	r.Use(middleware.DefaultStructuredLogger(cfg))
 	r.Use(middleware.Cors(cfg))
@@ -51,12 +51,12 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	}
 }
 
-func RegisterValidators(cfg *config.Config) {
+func RegisterValidators() {
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
 		val.RegisterValidation("phone", validation.IranianPhoneNumberValidator, false)
 		val.RegisterValidation("password", func(fl validator.FieldLevel) bool {
-			return validation.PasswordValidator(cfg, fl)
+			return validation.PasswordValidator(fl)
 		}, true)
 	}
 }

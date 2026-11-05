@@ -17,7 +17,7 @@ func OtpLimiter(cfg *config.Config) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		limiter := limiter.GetLimiter(ctx.Request.RemoteAddr)
 		if !limiter.Allow() {
-			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, helper.GenerateBaseResponseWithError(nil, false, helper.OtpLimiterError, errors.New("not allowed")))
+			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, helper.GenerateBaseResponseWithError(nil, false, helper.OtpLimiterError, errors.New("Not Allowed")))
 			ctx.Abort()
 		} else {
 			ctx.Next()

@@ -6,6 +6,7 @@ import (
 	"golang.org/x/time/rate"
 )
 
+// IPRateLimiter
 type IPRateLimiter struct {
 	ips map[string]*rate.Limiter
 	mu  *sync.RWMutex

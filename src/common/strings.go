@@ -19,7 +19,8 @@ var (
 	allCharSet     = lowerCharSet + upperCharSet + specialCharSet + numberSet
 )
 
-func CheckPassword(cfg *config.Config, password string) bool {
+func CheckPassword(password string) bool {
+	cfg := config.GetConfig()
 	if len(password) < cfg.Password.MinLength {
 		return false
 	}
@@ -43,9 +44,10 @@ func CheckPassword(cfg *config.Config, password string) bool {
 	return true
 }
 
-func GeneratePassword(cfg *config.Config) string {
+func GeneratePassword() string {
 	var password strings.Builder
 
+	cfg := config.GetConfig()
 	passwordLength := cfg.Password.MinLength + 2
 	minSpecialChar := 2
 	minNum := 3

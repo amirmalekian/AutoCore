@@ -6,8 +6,8 @@ type BaseHttpResponse struct {
 	Result           any                           `json:"result"`
 	Success          bool                          `json:"success"`
 	ResultCode       ResultCode                    `json:"result_code"`
-	ValidationErrors *[]validation.ValidationError `json:"validation_errors,omitempty"`
-	Error            any                           `json:"error,omitempty"`
+	ValidationErrors *[]validation.ValidationError `json:"validation_errors"`
+	Error            any                           `json:"error"`
 }
 
 func GenerateBaseResponse(result any, success bool, resultCode ResultCode) *BaseHttpResponse {
