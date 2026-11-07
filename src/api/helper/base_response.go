@@ -27,6 +27,14 @@ func GenerateBaseResponseWithError(result any, success bool, resultCode ResultCo
 	}
 }
 
+func GenerateBaseResponseWithAnyError(result any, success bool, resultCode ResultCode, err any) *BaseHttpResponse {
+	return &BaseHttpResponse{Result: result,
+		Success:    success,
+		ResultCode: resultCode,
+		Error:      err,
+	}
+}
+
 func GenerateBaseResponseWithValidationError(result any, success bool, resultCode ResultCode, err error) *BaseHttpResponse {
 	return &BaseHttpResponse{
 		Result:           result,
